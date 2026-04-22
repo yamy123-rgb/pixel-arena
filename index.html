@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PIXEL ARENA — Gaming & Esports News</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05060a;
+    --bg-2: #0b0d16;
+    --card: #11131f;
+    --card-hover: #171a2b;
+    --border: #1e2236;
+    --text: #e7e9f3;
+    --muted: #8a8fa8;
+    --cyan: #00f0ff;
+    --magenta: #ff2e93;
+    --green: #39ff14;
+    --yellow: #ffe81a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: "Rajdhani", system-ui, sans-serif; min-height: 100vh; }
+  body {
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(0,240,255,0.08), transparent 40%),
+      radial-gradient(circle at 90% 20%, rgba(255,46,147,0.08), transparent 40%),
+      linear-gradient(180deg, #05060a, #090b14 60%, #05060a);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 24px 20px 80px; position: relative; z-index: 1; }
+
+  header.top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px; margin-bottom: 28px;
+    background: linear-gradient(90deg, rgba(17,19,31,0.9), rgba(17,19,31,0.6));
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--cyan);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+    backdrop-filter: blur(6px);
+  }
+  .logo {
+    font-family: "Orbitron", sans-serif; font-weight: 900;
+    font-size: 28px; letter-spacing: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--magenta));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 20px rgba(0,240,255,0.35);
+  }
+  .logo span.dot { color: var(--green); -webkit-text-fill-color: var(--green); }
+  .meta { font-size: 13px; color: var(--muted); text-align: right; letter-spacing: 1px; text-transform: uppercase; }
+  .meta .live { color: var(--green); font-weight: 700; }
+  .meta .live::before { content: "● "; animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .hero {
+    position: relative;
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 0;
+    margin-bottom: 36px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    min-height: 380px;
+  }
+  .hero::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--magenta), var(--cyan));
+  }
+  .hero-img {
+    background-size: cover; background-position: center;
+    background-color: #0a0c18;
+    position: relative; min-height: 280px;
+  }
+  .hero-img::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 40%, rgba(17,19,31,0.95) 100%);
+  }
+  .hero-img.nofeatured {
+    background-image: linear-gradient(135deg, #1a1040 0%, #3a0d4a 40%, #0d2a4a 100%);
+  }
+  .hero-body { padding: 36px 36px; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+  .hero .tag { align-self: flex-start; }
+  .hero h1 {
+    font-family: "Orbitron", sans-serif; font-weight: 800;
+    font-size: 34px; line-height: 1.12; letter-spacing: 0.5px;
+    color: #fff;
+  }
+  .hero h1 a:hover { color: var(--cyan); }
+  .hero p { color: var(--muted); font-size: 17px; line-height: 1.55; }
+  .hero .byline { color: var(--muted); font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .hero .byline b { color: var(--green); font-weight: 700; }
+
+  .tag {
+    display: inline-block;
+    font-family: "Orbitron", sans-serif; font-weight: 700;
+    font-size: 11px; letter-spacing: 2.5px;
+    padding: 6px 12px;
+    background: rgba(0,240,255,0.08);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+  .tag.fortnite  { background: rgba(255,232,26,0.08); border-color: var(--yellow);   color: var(--yellow);   }
+  .tag.esports   { background: rgba(255,46,147,0.08); border-color: var(--magenta);  color: var(--magenta);  }
+  .tag.gaming    { background: rgba(0,240,255,0.08);  border-color: var(--cyan);     color: var(--cyan);     }
+  .tag.pc        { background: rgba(57,255,20,0.08);  border-color: var(--green);    color: var(--green);    }
+
+  .section-title {
+    font-family: "Orbitron", sans-serif; font-weight: 800;
+    font-size: 18px; letter-spacing: 3px;
+    color: #fff;
+    margin: 28px 0 18px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-title::before {
+    content: ""; width: 10px; height: 18px; background: var(--cyan); display: inline-block;
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--cyan);
+    box-shadow: 0 10px 40px rgba(0,240,255,0.18);
+  }
+  .card:hover .card-img { transform: scale(1.04); }
+  .card-img-wrap { aspect-ratio: 16/9; overflow: hidden; background: #0a0c18; position: relative; }
+  .card-img {
+    width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+    transition: transform 0.4s;
+  }
+  .card-img.placeholder {
+    background-image: linear-gradient(135deg, #141a35 0%, #2a1040 100%);
+  }
+  .card-img.placeholder::after {
+    content: "◆ PIXEL ARENA ◆";
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Orbitron", sans-serif; font-weight: 800;
+    color: rgba(255,255,255,0.1); letter-spacing: 3px; font-size: 14px;
+  }
+  .card-body { padding: 16px 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .card h3 {
+    font-family: "Orbitron", sans-serif; font-weight: 700;
+    font-size: 16px; line-height: 1.3; color: #fff;
+  }
+  .card:hover h3 { color: var(--cyan); }
+  .card p { color: var(--muted); font-size: 14px; line-height: 1.5; flex: 1; }
+  .card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+    padding-top: 6px; border-top: 1px solid var(--border);
+  }
+  .card-footer b { color: var(--text); font-weight: 600; }
+
+  footer.bottom {
+    margin-top: 50px; padding: 24px 20px; text-align: center;
+    color: var(--muted); font-size: 13px; letter-spacing: 1.5px;
+    border-top: 1px solid var(--border);
+  }
+  footer.bottom span { color: var(--cyan); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-img { min-height: 200px; }
+    .hero h1 { font-size: 26px; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .logo { font-size: 20px; letter-spacing: 2px; }
+    .meta { font-size: 11px; }
+    .grid { grid-template-columns: 1fr; }
+    .hero-body { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">PIXEL<span class="dot">/</span>ARENA</div>
+    <div class="meta">
+      <div class="live">LIVE FEED</div>
+      <div>UPDATED WEDNESDAY, APR 22 · 14:03</div>
+    </div>
+  </header>  <section class="hero">
+    <div class="hero-img" style="background-image:url('https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/04/screenshot-2026-04-21-at-11-05-27-am.png')"></div>
+    <div class="hero-body">
+      <span class="tag gaming">GAMING</span>
+      <h1><a href="https://www.polygon.com/lee-pace-interview-thragg-invincible-season-4-finale/" target="_blank" rel="noopener">Invincible season 4 ending explained and how it sets up season 5 and beyond</a></h1>
+      <p>The actor explains the character&#39;s goals, his relationship with Mark, and what he&#39;s like to see in future seasons.</p>
+      <div class="byline"><b>Polygon</b> · 3m ago</div>
+    </div>
+  </section>
+
+  <div class="section-title">LATEST DROPS</div>
+  <div class="grid">    <a class="card" href="https://www.pcgamer.com/hardware/openais-hilarious-new-patent-diagrams-have-hbm-stacked-up-like-rice-cakes/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/dU3nBx2LAigjEz9HY7F8pk-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>OpenAI&#39;s hilarious new patent diagrams have &#39;HBM stacked up like rice cakes&#39;</h3>
+        <p>Would you expect any less from OpenAI during a memory shortage?</p>
+        <div class="card-footer"><b>PC Gamer</b><span>8m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.pcgamer.com/hardware/memory/we-have-no-choice-but-to-impose-a-severe-punishment-ex-samsung-researcher-sentenced-to-7-years-in-prison-for-leaking-dram-tech-to-a-chinese-competitor/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/5fqsVcETkLSUGyWAmSThCP-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>&#39;We have no choice but to impose a severe punishment&#39;: Ex Samsung researcher sentenced to 7 years in prison for leaking DRAM tech to a Chinese competitor</h3>
+        <p>The semiconductor process tech was reportedly deemed &#39;a core national technology&#39; of South Korea.</p>
+        <div class="card-footer"><b>PC Gamer</b><span>9m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/entertainment/first-loch-ness-monster-sighting-of-2026-reported-after-months-of-silence-3355093/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/First-Loch-Ness-Monster-sighting-of-2026-reported-after-months-of-silence.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>First Loch Ness Monster sighting of 2026 reported after months of silence</h3>
+        <p>The first reported sighting of the Loch Ness Monster in 2026 has officially been logged, ending a months-long dry spell.</p>
+        <div class="card-footer"><b>Dexerto</b><span>9m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/entertainment/air-force-responds-after-pilots-bizarre-flight-patterns-go-viral-3355044/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/plane.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>Air Force responds after pilot’s bizarre flight patterns go viral</h3>
+        <p>Finland’s Air Force has launched an investigation after cadet pilots were found to have flown training routes that resembled penis shapes.</p>
+        <div class="card-footer"><b>Dexerto</b><span>20m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/entertainment/mlb-star-admits-he-keeps-trading-cards-that-fans-send-him-to-sign-3355087/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/trey-yesavage.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>MLB star admits he keeps trading cards that fans send him to sign</h3>
+        <p>Trey Yesavage gets sent trading cards by fans all the time, but he refuses to sign anything and just keeps the cards instead.</p>
+        <div class="card-footer"><b>Dexerto</b><span>21m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.pcgamer.com/software/browsers/defenders-finally-have-a-chance-to-win-decisively-firefox-cto-raves-about-claude-mythos-bug-hunting-capabilities-after-it-finds-271-vulnerabilities/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/JFixp63yhVS9YLjvmczgBd-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>&#39;Defenders finally have a chance to win, decisively&#39;: Firefox CTO raves about Claude Mythos&#39; bug hunting capabilities after it finds 271 vulnerabilities</h3>
+        <p>That&#39;s one heck of a fly swatter, Anthropic.</p>
+        <div class="card-footer"><b>PC Gamer</b><span>22m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/tv-movies/invincible-season-4-ending-explained-what-is-thraggs-disturbing-plan-for-earth-3355010/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Invincible-Season-4-ending-explained-What-is-Thraggs-disturbing-plan-for-Earth.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>Invincible Season 4 ending explained: What is Thragg’s disturbing plan for Earth?</h3>
+        <p>Thragg gives Mark a shocking ultimatum that could change Earth forever at the end of Invincible Season 4.</p>
+        <div class="card-footer"><b>Dexerto</b><span>33m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/youtube/youtube-makes-deepfakes-easier-to-takedown-but-not-for-everyone-just-yet-3355107/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2025/12/11/youtube-responds-to-ai-concerns-channel-bans-2025.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>YouTube makes deepfakes easier to takedown, but not for everyone just yet</h3>
+        <p>YouTube has announced that it will now be easier for celebrities to get deepfake videos of themselves removed, as the platform wants to clamp down.</p>
+        <div class="card-footer"><b>Dexerto</b><span>43m ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/entertainment/nhl-fans-rain-glass-on-opposition-coach-after-celebrating-unbelivable-playoffs-save-3355033/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/colorado-avalanche.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>NHL fans rain glass on opposition coach after celebrating unbelivable playoffs save</h3>
+        <p>Colorado Avalanche fans accidentally smashed the glass at a hockey game after getting a little too excited over a huge save.</p>
+        <div class="card-footer"><b>Dexerto</b><span>1h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.pcgamer.com/hardware/graphics-cards/pragmata-is-yet-another-launch-day-fail-for-intels-gpus-but-its-quick-response-to-game-issues-shows-its-still-working-hard-for-gamers/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/tC2qwdgc7juWr3vcq3dRbe-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>Pragmata is yet another launch day fail for Intel&#39;s GPUs, but its quick response to game issues shows it&#39;s still working hard for gamers</h3>
+        <p>The dad sim is back on the table for Intel GPUs.</p>
+        <div class="card-footer"><b>PC Gamer</b><span>1h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/fallout/fallout-new-vegas-2-was-real-but-plans-evaporated-according-to-lead-dev-3355020/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Fallout-New-Vegas-2.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>Fallout: New Vegas 2 was real but plans “evaporated” according to lead dev</h3>
+        <p>Fallout: New Vegas lead designer Chris Avellone has revealed that Obsidian did have plans for a sequel that never saw the light of day.</p>
+        <div class="card-footer"><b>Dexerto</b><span>1h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.ign.com/articles/marathon-changes-announced" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://assets-prd.ignimgs.com/2023/05/25/marathonthumb-1685022943759.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Marathon Changes Announced</h3>
+        <p>Marathon has doubled the amount of Depleted Patch Kits (meds) and Depleted Shield Charges (armor) consumables players can carry in a single inventory slot as Bungie fights to make its extraction shoot...</p>
+        <div class="card-footer"><b>IGN</b><span>1h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/minecraft/how-to-get-new-minecraft-crafting-table-cape-3355036/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Minecraft-crafting-cape.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>How to get new Minecraft crafting table cape</h3>
+        <p>While you may have thousands of different skins to make your character stand out in Minecraft, there’s always room for a new cape.</p>
+        <div class="card-footer"><b>Dexerto</b><span>1h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.ign.com/articles/elden-ring-movie-set-photos-leak" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://assets-prd.ignimgs.com/2026/04/22/ss-943bf6fe62352757d9070c1d33e50b92fe8539f1-1920x1080-1776850266688.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Elden Ring Movie Set Photos Leak</h3>
+        <p>With production of the Elden Ring movie in full swing, set photo leaks have hit the internet — and some of them offer what look like big spoilers.</p>
+        <div class="card-footer"><b>IGN</b><span>1h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/tv-movies/stranger-things-tales-from-85-release-date-time-netflix-3355011/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Stranger-Things-Mike-Hopper.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>What time is Stranger Things: Tales From ’85 on Netflix?</h3>
+        <p>When to watch Stranger Things: Tales From ’85, the animated spinoff that sees the Hawkins heroes battle new monsters.</p>
+        <div class="card-footer"><b>Dexerto</b><span>2h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/entertainment/dog-walks-herself-to-day-care-to-play-with-boyfriend-after-escaping-owners-house-3355049/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Dog-walks-herself-to-day-care-after-escaping-house-to-play-with-22boyfriend22.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>Dog walks herself to day care to play with “boyfriend” after escaping owner’s house</h3>
+        <p>A dog in Canada has gone super viral after it escaped from its home and took itself to day care.</p>
+        <div class="card-footer"><b>Dexerto</b><span>2h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.ign.com/articles/pokmon-doubles-down-on-decision-to-penalize-pro-player" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://assets-prd.ignimgs.com/2026/04/22/109voltorb-ag-anime-1776848266795.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Pok&#233;mon Doubles Down on Decision to Penalize Pro Player</h3>
+        <p>A Pok&#233;mon pro who saw his tournament win taken away from him in controversial circumstances will not be getting an official reprieve.</p>
+        <div class="card-footer"><b>IGN</b><span>2h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/entertainment/logan-pauls-550k-one-piece-and-dragon-ball-manga-purchase-leaves-fans-furious-3355003/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/Logan-Pauls-550K-One-Piece-and-Dragon-Ball-manga-buy-leaves-fans-furious.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>Logan Paul’s $550K One Piece and Dragon Ball manga purchase leaves fans furious</h3>
+        <p>Logan Paul has stepped into the manga-collecting world, but his purchase of One Piece and Dragon Ball chapters has already sparked backlash from fans.</p>
+        <div class="card-footer"><b>Dexerto</b><span>2h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.ign.com/articles/japanese-website-owner-fined-6300-for-posting-godzilla-and-overlord-spoilers" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://assets-prd.ignimgs.com/2026/04/22/unnamed-8-1776846847425.png')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Japanese Website Owner Fined $6,300 for Posting Godzilla and Overlord Spoilers</h3>
+        <p>We live in a world where most people don’t think twice about posting detailed spoiler articles or video breakdowns of the latest blockbuster movies or TV shows. However, this month, the Tokyo District...</p>
+        <div class="card-footer"><b>IGN</b><span>2h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.ign.com/articles/planned-sydney-sweeney-cameo-reportedly-chopped-from-the-devil-wears-prada-2" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://assets-prd.ignimgs.com/2025/04/25/sydney-sweeney-1745569841236.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Planned Sydney Sweeney Cameo Reportedly Chopped from The Devil Wears Prada 2</h3>
+        <p>Sweeney was apparently playing herself in the trimmed scene.</p>
+        <div class="card-footer"><b>IGN</b><span>4h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.gamespot.com/articles/roblox-cant-seem-to-keep-anyone-happy-right-now/1100-6539510/?ftag=CAD-01-10abi2f" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.gamespot.com/a/uploads/screen_medium/1597/15975876/4685928-designingrobloxavatarsanditems.png')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Roblox Can’t Seem To Keep Anyone Happy Right Now</h3>
+        <p>Roblox has a tricky tightrope to walk between making its online sandbox safe and keeping it fun. On one side, players rail against changes locking off social settings and requiring privacy-threatening...</p>
+        <div class="card-footer"><b>GameSpot</b><span>6h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.pcgamer.com/games/rpg/owlcats-had-some-unusual-problems-writing-romance-we-realized-we-had-three-female-romanceable-characters-and-all-three-were-cannibals/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/XWgyU7Cg5gXc6RPXDHGt5d-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>Owlcat&#39;s had some unusual problems writing romance: &#39;we realized we had three female romanceable characters, and all three were cannibals&#39;</h3>
+        <p>I can fix them.</p>
+        <div class="card-footer"><b>PC Gamer</b><span>7h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.pcgamer.com/gaming-industry/australia-wants-to-know-how-valve-is-combating-extreme-right-communities-on-steam/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/fbXEgUbJbMsVS2ZtJumBF9-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>Australia wants to know how Valve is combating &#39;extreme-right communities&#39; on Steam</h3>
+        <p>If Valve doesn&#39;t comply with a new transparency notice it could face big fines.</p>
+        <div class="card-footer"><b>PC Gamer</b><span>7h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.polygon.com/the-new-event-horizon-continuation-has-the-perfect-writer/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/22819738/event_horizon.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Event Horizon is finally getting a sequel, and it has the perfect writer</h3>
+        <p>Christian Ward is giving fans new lore and more</p>
+        <div class="card-footer"><b>Polygon</b><span>7h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.ign.com/articles/daredevil-born-again-season-2-episode-6-review-recap" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://assets-prd.ignimgs.com/2026/04/21/daredevil-born-again-episode-6-jessica-jones-thumb-1776798177543.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Daredevil: Born Again Season 2, Episode 6 Review - &quot;Requiem&quot;</h3>
+        <p>In this week&#39;s episode of Daredevil: Born Again, Krysten Ritter finally makes her crowd-pleasing return as Jessica Jones, while Matt’s refusal to kill is given a compelling focus.</p>
+        <div class="card-footer"><b>IGN</b><span>10h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.pcgamer.com/hardware/at-least-theres-one-tech-company-making-me-feel-sane-in-an-increasingly-insane-world/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/9nekAJUHXFwmK5ByKW3ppE-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>At least there&#39;s one tech company making me feel sane in an increasingly insane world</h3>
+        <p>In the AI era, the upgradeable computer is now a subtle act of rebellion.</p>
+        <div class="card-footer"><b>PC Gamer</b><span>11h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.gamespot.com/articles/lee-cronins-the-mummy-buyin-guide/1100-6539471/?ftag=CAD-01-10abi2f" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.gamespot.com/a/uploads/screen_medium/1601/16018044/4684104-the-mummy.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>One Of The Year&#39;s Biggest Horror Movies Is Getting A Gnarly Steelbook Edition Blu-Ray</h3>
+        <p>Lee Cronin&#39;s The Mummy Limited-Edition Steelbook (4K Blu-ray) $38 | Release date TBA Preorder at Amazon Preorder at Walmart Preorder at Gruv Most people think of an enjoyable romp starring Brendan Fra...</p>
+        <div class="card-footer"><b>GameSpot</b><span>11h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.dexerto.com/food/doordash-ditching-bank-delays-with-crypto-payouts-for-drivers-3354976/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://www.dexerto.com/cdn-image/wp-content/uploads/2026/04/22/doordash-to-pay-drivers-in-stablecoin.jpg?width=1080&amp;quality=75&amp;format=auto')"></div></div>
+      <div class="card-body">
+        <span class="tag esports">ESPORTS</span>
+        <h3>DoorDash plans to pay Dashers in stablecoin for faster cashouts</h3>
+        <p>DoorDash is partnering with the blockchain ‘Tempo’ to start paying out drivers and merchants in cryptocurrency.</p>
+        <div class="card-footer"><b>Dexerto</b><span>11h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.ign.com/articles/best-apple-airpods-pro-deal-for-april-2026" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://assets-prd.ignimgs.com/2026/04/21/appleairpodspro32-1776808779548.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag gaming">GAMING</span>
+        <h3>Save 20% Off the Apple AirPods Pro 3, the Best Wireless Earbuds for iPhone</h3>
+        <p>Features active noise cancelation, heart rate tracking, and Live Translation with Apple Intelligence</p>
+        <div class="card-footer"><b>IGN</b><span>12h ago</span></div>
+      </div>
+    </a>    <a class="card" href="https://www.pcgamer.com/games/sim/masters-of-albion-launch-time-release-date/" target="_blank" rel="noopener">
+      <div class="card-img-wrap"><div class="card-img" style="background-image:url('https://cdn.mos.cms.futurecdn.net/GL4zu2UnfXgt6KDjsEAYKm-1280-80.jpg')"></div></div>
+      <div class="card-body">
+        <span class="tag pc">PC</span>
+        <h3>Here&#39;s when Masters of Albion launches in your timezone</h3>
+        <p>New Molyneaux.</p>
+        <div class="card-footer"><b>PC Gamer</b><span>12h ago</span></div>
+      </div>
+    </a>  </div>
+  <footer class="bottom">
+    <span>◆</span> PIXEL ARENA · Auto-aggregated from IGN, Dexerto, Dot Esports, PC Gamer, GameSpot, Polygon <span>◆</span>
+  </footer>
+</div>
+</body>
+</html>
